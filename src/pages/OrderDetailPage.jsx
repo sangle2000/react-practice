@@ -1,19 +1,20 @@
 import { ArrowLeft, Clock } from "lucide-react";
-import { STATUS_STYLE, formatVND } from "../data/mockData";
+import { INITIAL_ORDERS, STATUS_STYLE, formatVND } from "../data/mockData";
+
+const order = INITIAL_ORDERS[1];
+const STEPS = ["Đang xử lý", "Đang giao", "Đã giao"];
+const CURRENT_STEP_INDEX = STEPS.indexOf(order.status);
 
 // ================= CHI TIẾT ĐƠN HÀNG =================
-export function OrderDetailPage({ order, goTo }) {
+export function OrderDetailPage() {
   const subtotal = order.items.reduce((s, i) => s + i.price * i.quantity, 0);
   const discount = subtotal > 1000000 ? subtotal * 0.1 : 0;
   const total = subtotal - discount;
   const StatusIcon = STATUS_STYLE[order.status]?.icon || Clock;
 
-  const steps = ["Đang xử lý", "Đang giao", "Đã giao"];
-  const currentStepIndex = steps.indexOf(order.status);
-
   return (
     <div className="bg-white p-6 border border-slate-200 rounded-xl">
-      <button onClick={() => goTo("orders")} className="flex items-center gap-1.5 mb-5 text-slate-500 hover:text-slate-800 text-sm">
+      <button className="flex items-center gap-1.5 mb-5 text-slate-500 hover:text-slate-800 text-sm">
         <ArrowLeft size={15} /> Quay lại danh sách đơn hàng
       </button>
 
@@ -29,20 +30,20 @@ export function OrderDetailPage({ order, goTo }) {
 
       {/* Thanh tiến trình trạng thái */}
       <div className="flex items-center mb-8">
-        {steps.map((step, idx) => (
+        {STEPS.map((step, idx) => (
           <div key={step} className="flex flex-1 last:flex-none items-center">
             <div className="flex flex-col items-center">
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold ${
-                  idx <= currentStepIndex ? "bg-slate-800 text-white" : "bg-slate-100 text-slate-400"
+                  idx <= CURRENT_STEP_INDEX ? "bg-slate-800 text-white" : "bg-slate-100 text-slate-400"
                 }`}
               >
                 {idx + 1}
               </div>
               <span className="mt-1.5 text-slate-500 text-xs whitespace-nowrap">{step}</span>
             </div>
-            {idx < steps.length - 1 && (
-              <div className={`h-0.5 flex-1 mx-2 ${idx < currentStepIndex ? "bg-slate-800" : "bg-slate-100"}`} />
+            {idx < STEPS.length - 1 && (
+              <div className={`h-0.5 flex-1 mx-2 ${idx < CURRENT_STEP_INDEX ? "bg-slate-800" : "bg-slate-100"}`} />
             )}
           </div>
         ))}

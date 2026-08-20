@@ -1,50 +1,28 @@
-import { Home, ShoppingCart, User, Package, LogOut } from "lucide-react";
+import { Home, ShoppingCart, User, Package } from "lucide-react";
 
 // ================= NAVBAR =================
-export function NavBar({ page, goTo, requireAuth, currentUser, handleLogout, cartCount }) {
-  const NavItem = ({ target, icon: Icon, label, onClick }) => (
-    <button
-      onClick={onClick || (() => goTo(target))}
-      className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-        page === target ? "bg-slate-800 text-white" : "text-slate-600 hover:bg-slate-100"
-      }`}
-    >
-      <Icon size={16} />
-      {label}
-    </button>
-  );
-
+export function NavBar() {
   return (
     <header className="top-0 z-10 sticky bg-white border-slate-200 border-b">
       <div className="flex justify-between items-center mx-auto px-4 max-w-5xl h-16">
-        <button onClick={() => goTo("home")} className="font-bold text-slate-800 text-lg">
-          🛍️ MiniShop
-        </button>
+        <div className="font-bold text-slate-800 text-lg">🛍️ MiniShop</div>
         <nav className="flex items-center gap-1">
-          <NavItem target="home" icon={Home} label="Trang chủ" />
-          <NavItem target="shop" icon={ShoppingCart} label={`Mua hàng${cartCount ? ` (${cartCount})` : ""}`} />
-          <NavItem
-            target="orders"
-            icon={Package}
-            label="Đơn hàng"
-            onClick={() => requireAuth("orders")}
-          />
-          {currentUser ? (
-            <div className="flex items-center gap-2 ml-2 pl-2 border-slate-200 border-l">
-              <span className="flex items-center gap-1 text-slate-500 text-sm">
-                <User size={14} /> {currentUser.name}
-              </span>
-              <button
-                onClick={handleLogout}
-                className="hover:bg-red-50 p-2 rounded-lg text-slate-400 hover:text-red-500"
-                title="Đăng xuất"
-              >
-                <LogOut size={16} />
-              </button>
-            </div>
-          ) : (
-            <NavItem target="auth" icon={User} label="Đăng nhập" />
-          )}
+          <button className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium bg-slate-800 text-white">
+            <Home size={16} />
+            Trang chủ
+          </button>
+          <button className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100">
+            <ShoppingCart size={16} />
+            Mua hàng (2)
+          </button>
+          <button className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100">
+            <Package size={16} />
+            Đơn hàng
+          </button>
+          <button className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100">
+            <User size={16} />
+            Đăng nhập
+          </button>
         </nav>
       </div>
     </header>
